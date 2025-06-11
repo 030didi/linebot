@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
-
+from linebot import LineBotApi, WebhookHandler
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import (
@@ -12,6 +12,8 @@ from linebot.models import (
     StickerSendMessage,
     LocationSendMessage,
     AudioSendMessage,
+    QuickReplyButton,
+    MessageAction,
 )
 from linebot.models import QuickReply, QuickReplyButton, MessageAction
 from linebot.models import VideoSendMessage, TemplateSendMessage
@@ -59,7 +61,7 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 if isinstance(event.message, TextMessage):
-                    mtext = event.message.text                                                         
+                    mtext = event.message.text
                     if mtext == '課程應修':
                         course(event)
 
@@ -107,6 +109,13 @@ def callback(request):
                         
                     elif mtext == "map":
                         sendMap(event)
+                        
+                    elif mtext == "學長姐QA":
+                        sendQA(event)
+                        
+                    elif handle_qa_response(event, mtext):
+                        # QA回應已處理
+                        pass
 
                     else:
                         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=mtext))
@@ -644,3 +653,103 @@ def food3(event):
         line_bot_api.reply_message(event.reply_token,message)
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
+        
+        
+        
+#QA功能
+
+def sendQA(event):
+    """發送學長姐QA選單"""
+    
+    # 創建快速回覆按鈕
+    quick_reply_buttons = [
+        QuickReplyButton(action=MessageAction(label="💰一個月生活費", text="生活費問題")),
+        QuickReplyButton(action=MessageAction(label="💳系學/學生會費", text="系學/學生會費問題")),
+        QuickReplyButton(action=MessageAction(label="👥有沒有直屬", text="直屬問題")),
+        QuickReplyButton(action=MessageAction(label="👗要穿什麼", text="穿搭問題")),
+        QuickReplyButton(action=MessageAction(label="🏠學校住宿室友問題", text="住宿問題")),
+        QuickReplyButton(action=MessageAction(label="📚必/選修課被當", text="必修問題")),
+        QuickReplyButton(action=MessageAction(label="🎯活動哪裡找", text="活動問題")),
+        QuickReplyButton(action=MessageAction(label="⏰被記曠課", text="曠課問題")),
+        QuickReplyButton(action=MessageAction(label="🇺🇸英文畢業門檻", text="英文門檻問題")),
+        QuickReplyButton(action=MessageAction(label="🔙返回", text="返回主選單"))
+    ]
+    
+    # 發送QA選單訊息
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(
+            text="🎓 學長姐QA時間！\n\n請選擇你想了解的問題：",
+            quick_reply=QuickReply(items=quick_reply_buttons)
+        )
+    )
+
+def handle_qa_response(event, mtext):
+    """處理QA回應"""
+    
+    qa_responses = {
+        "生活費問題": {
+            "question": "一個月生活費大概多少？",
+            "answer": "💰 生活費大概8000～15000元\n\n這個範圍包含了基本的餐費、交通費、雜支等。實際花費會因個人消費習慣而有所不同喔！"
+        },
+        
+        "系學/學生會費問題": {
+            "question": "系學會費跟學生會費一定要繳嗎？",
+            "answer": "💳 系費跟學生會費可以先不繳\n\n除非你對某些特定活動有興趣，不然可以先觀望。等熟悉環境後再決定要不要參加！"
+        },
+        
+        "直屬問題": {
+            "question": "有沒有直屬會怎樣嗎？",
+            "answer": "👥 真心覺得沒差！\n\n通常只會一開始有交流，後面都跟死人一樣，很難變熟。除非你很主動會去跟他們聊天，不然影響不大。"
+        },
+        
+        "穿搭問題": {
+            "question": "我上大學要穿得很花枝招展嗎？",
+            "answer": "👗 你穿得開心就好！\n\n真的沒人在乎你怎麼穿，大學就是要做自己。舒服自在最重要～"
+        },
+        
+        "住宿問題": {
+            "question": "住宿與室友不合怎麼辦？",
+            "answer": "🏠 室友不合可以檢舉\n\n如果溝通後還是不行，可以申請換室友。學校都有相關的處理程序，不要委屈自己！"
+        },
+        
+        "必修問題": {
+            "question": "如果必修要被當了/或是已經被當了，該怎麼辦？",
+            "answer": "📚 怕被當可以停修\n\n通常下學期都可以重修，但要注意：\n• 有沒有老師開課\n• 會不會跟其他課撞課\n提早規劃比較好！"
+        },
+        
+        "活動問題": {
+            "question": "學校活動要去哪裡看？",
+            "answer": "🎯 上i-touch找活動資訊\n\n通識活動、音樂會、獎學金申請等資訊都可以在i-touch上找到。記得定期關注！"
+        },
+        
+        "曠課問題": {
+            "question": "我被記曠課會怎樣嗎？",
+            "answer": "⏰ 每堂課只能曠課兩次\n\n超過兩次就會被老師扣考，只能選擇停修。所以要注意出席率喔！"
+        },
+        
+        "英文門檻問題": {
+            "question": "學校英文畢業門檻是什麼？",
+            "answer": "🇺🇸 英文畢業門檻\n\n• 一定要修兩門全英文課程\n• 多益要過550或是全民英檢過中級初試!!\n• 沒過，有大會考可以補救\n\n建議早點規劃，免得影響畢業！"
+        }
+    }
+    
+    if mtext in qa_responses:
+        response = qa_responses[mtext]
+        
+        # 創建回到QA選單的快速回覆
+        quick_reply = QuickReply(items=[
+            QuickReplyButton(action=MessageAction(label="📋 回到QA選單", text="學長姐QA")),
+            QuickReplyButton(action=MessageAction(label="🔙 返回主選單", text="返回主選單"))
+        ])
+        
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(
+                text=f"{response['question']}\n\n{response['answer']}",
+                quick_reply=quick_reply
+            )
+        )
+        return True
+    
+    return False
