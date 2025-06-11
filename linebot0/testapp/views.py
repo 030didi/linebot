@@ -116,6 +116,53 @@ def callback(request):
                     elif handle_qa_response(event, mtext):
                         # QA回應已處理
                         pass
+                    elif mtext == "交通資訊":
+                        sendTraffic(event)
+
+                    elif mtext == '往北交通資訊':
+                        north(event)
+
+                    elif mtext == '往南交通資訊':
+                        south(event)
+
+                    elif mtext == '住宿資訊':
+                        live(event)
+
+                    elif mtext == '男宿':
+                        boylive(event)
+
+                    elif mtext == '男宿基本資訊':
+                        bb(event)
+
+                    elif mtext == '男宿位置':
+                        sendPosition1(event)
+
+                    elif mtext == '女宿':
+                        girllive(event)
+
+                    elif mtext == '恩慈':
+                        gn(event)
+                    elif mtext == '恩慈基本資訊':
+                        gnn(event)
+                    elif mtext == '恩慈位置':
+                        sendPosition2(event)
+
+                    elif mtext == '良善':
+                        gc(event)
+
+                    elif mtext == '良善基本資訊':
+                        gcc(event)
+
+                    elif mtext == '良善位置':
+                        sendPosition3(event)
+
+                    elif mtext == '租屋':
+                        liveoutside(event)
+                    elif mtext == '租房基本資訊':
+                        ll(event)
+
+
+
 
                     else:
                         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=mtext))
@@ -123,6 +170,379 @@ def callback(request):
         return HttpResponse()
     else:
         return HttpResponseBadRequest()
+
+
+
+
+
+
+#交通資訊
+def sendTraffic(event): #轉盤樣板
+    try:
+        message = TemplateSendMessage(
+            alt_text='交通資訊',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url='https://www.cycu.edu.tw/img/map.gif',
+                        title='交通資訊',
+                        text='你是北漂還是南漂？',
+                        actions=[
+                            MessageTemplateAction( 
+                                label='北漂',
+                                text='往北交通資訊'
+                            ),
+                            MessageTemplateAction( 
+                                label='南漂',
+                                text='往南交通資訊'
+                            ),
+                           
+                        ]
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+def north(event):
+    try:
+        text2 = '''
+往北部移動的話，可以....
+
+1.搭乘校門口的客運
+2.可坐公車120或騎U-bike到機捷，搭至A22老街溪，坐到台北車站 
+3.桃園高鐵站
+4.搭乘155、156、167、122N至中壢火車站，搭乘火車前往
+
+                '''
+        message = TextSendMessage(
+            text = text2
+        )
+        line_bot_api.reply_message(event.reply_token,message)
+    except:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
+
+def south(event):
+    try:
+        text2 = '''
+往南部移動的話，可以....
+
+1.搭乘181A往桃園高鐵站
+2.坐到板橋高鐵站再往下搭（155/156/169/167/121N到中壢火車站 往上搭到板橋站再轉高鐵)
+4.搭乘155、156、167、122N至中壢火車站，搭乘火車前往
+                '''
+        message = TextSendMessage(
+            text = text2
+        )
+        line_bot_api.reply_message(event.reply_token,message)
+    except:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='發生錯誤!'))
+
+
+
+# 住宿資訊
+def live(event): 
+    try:
+        message = TemplateSendMessage(
+            alt_text='住宿資訊',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        title='住宿資訊',
+                        text='要住哪！',
+                        actions=[
+                            MessageTemplateAction( 
+                                label='男宿',
+                                text='男宿'
+                            ),
+                            MessageTemplateAction( 
+                                label='女宿',
+                                text='女宿'
+                            ),
+                            MessageTemplateAction( 
+                                label='租屋',
+                                text='租屋'
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+# 男住宿資訊
+def boylive(event):  
+    try:
+        message = TemplateSendMessage(
+            alt_text='男住宿資訊',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        title='男生住宿資訊',
+                        text='點選想了解的內容',
+                        actions=[
+                            MessageTemplateAction( 
+                                label='男宿基本資訊',
+                                text='男宿基本資訊'
+                            ),
+                            MessageTemplateAction( 
+                                label='男宿位置',
+                                text='男宿位置'
+                            ),
+                            URITemplateAction(
+                                label='力行宿舍介紹影片',
+                                uri='https://www.youtube.com/watch?v=iSq_-5DO244&t=2s'
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+# 男宿基本資訊
+def bb(event): 
+    try:
+        text = '''
+1.名稱：力行宿舍
+2.六人一間，雅房
+3.力行宿舍床墊尺寸：90CM × 200CM。可自行購買或是一起訂購
+4.無頭鬼拍球鬼故事
+
+(隱藏資訊：浴室在地名產：聽說水龍頭會變成水箭龜)
+        '''
+        message = TextSendMessage(text=text)
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+# 力行宿舍位置
+def sendPosition1(event): 
+    try:
+        message = LocationSendMessage(
+            title='力行宿舍',
+            address='中原大學力行宿舍\n320桃園市中壢區新中北路291號',
+            latitude=24.959707256475387,
+            longitude=121.24077895356582
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+
+
+
+
+# 女生住宿資訊
+def girllive(event):  
+    try:
+        message = TemplateSendMessage(
+            alt_text='女住宿資訊',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        title='女生住宿資訊',
+                        text='女生宿舍分為恩慈跟良善~，點選想了解的內容吧！',
+                        actions=[
+                            MessageTemplateAction( 
+                                label='恩慈',
+                                text='恩慈'
+                            ),
+                            MessageTemplateAction( 
+                                label='良善',
+                                text='良善'
+                            ),     
+                        
+                        ]
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+# 恩慈基本資訊
+def gn(event):  
+    try:
+        message = TemplateSendMessage(
+            alt_text='恩慈',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        title='恩慈',
+                        thumbnail_image_url='https://scontent.ftpe8-4.fna.fbcdn.net/v/t39.30808-6/472482520_1104141131409888_928593725460338375_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=U-N6Txl64IsQ7kNvwEj3R_2&_nc_oc=AdmNo9F9bTsH8jfdwex2XqBjGuJId0ohX14gtbGqvjBBKPLim9bqz93NtxVW4YhoOZA&_nc_zt=23&_nc_ht=scontent.ftpe8-4.fna&_nc_gid=vxhIOonHmBBdt-9fo3V0-g&oh=00_AfOox9Dvl4uAYtz-aM6Jhr7zdClhVZcJMAZ428pR0-A9oA&oe=684F41B0',
+                        text='點選想了解的內容',
+                        actions=[
+                            MessageTemplateAction( 
+                                label='恩慈基本資訊',
+                                text='恩慈基本資訊'
+                            ),
+                            MessageTemplateAction( 
+                                label='恩慈位置',
+                                text='恩慈位置'
+                            ),
+                            URITemplateAction(
+                                label='恩慈宿舍介紹影片',
+                                uri='https://www.youtube.com/watch?v=zSmtxSjeaZA'
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+
+# 恩慈基本資訊
+def gnn(event): 
+    try:
+        text = '''
+1.四人一間，雅房
+2.宿舍床墊尺寸：85CM*190CM。可自行購買或是一起訂購
+3.12點後會自動斷電
+4.衛浴：一邊三間廁所一邊三間浴室
+5.00:00~06:00需申請夜間進出同意書，刷指靜脈進入
+
+        '''
+        message = TextSendMessage(text=text)
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+
+# 恩慈宿舍位置
+def sendPosition2(event): 
+    try:
+        message = LocationSendMessage(
+            title='恩慈宿舍',
+            address='320桃園市中壢區大仁二街35號',
+            latitude=24.955495578095785,
+            longitude=121.24245257437362
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+
+
+
+
+# 良善基本資訊
+def gc(event):  
+    try:
+        message = TemplateSendMessage(
+            alt_text='良善',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        title='良善',
+                        thumbnail_image_url='https://scontent-tpe1-1.xx.fbcdn.net/v/t39.30808-6/480497410_1183469673481104_1163668016500089089_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=E6DaaB6QA_IQ7kNvwH43G1J&_nc_oc=AdngwoF2e-864H0p2-MQsoNO5b6oJYS536HZ3rq47y75uefrbo5QjWFfN4i-ww7XXiM&_nc_zt=23&_nc_ht=scontent-tpe1-1.xx&_nc_gid=-_nzNTpayeYOAbO3lzzZuw&oh=00_AfM0tPRZtyRBg1vvUGXdyCmWvw-Z80cgmBCGZTmej_YrtQ&oe=684F5F98',
+                        text='點選想了解的內容',
+                        actions=[
+                            MessageTemplateAction( 
+                                label='良善基本資訊',
+                                text='良善基本資訊'
+                            ),
+                            MessageTemplateAction( 
+                                label='良善位置',
+                                text='良善位置'
+                            ),
+                            URITemplateAction(
+                                label='良善宿舍介紹影片',
+                                uri='https://www.youtube.com/watch?v=fnr3mBE46lM&t=1s'
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+
+# 良善基本資訊
+def gcc(event): 
+    try:
+        text = '''
+1.四人一間，套房
+2.宿舍床墊尺寸：90CM*180CM。可自行購買或是一起訂購
+3.00:00~06:00需申請夜間進出同意書，刷指靜脈進入
+4.可借桌遊與遊戲
+
+        '''
+        message = TextSendMessage(text=text)
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+
+# 良善宿舍位置
+def sendPosition3(event): 
+    try:
+        message = LocationSendMessage(
+            title='良善宿舍',
+            address='良善樓 No.82 Daren St, 中壢區桃園市320',
+            latitude=24.955608540000007,
+            longitude=121.2420865431405
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+
+
+# 租房資訊
+def liveoutside(event):  
+    try:
+        message = TemplateSendMessage(
+            alt_text='租房資訊',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        title='租房資訊',
+                        text='點選想了解的內容',
+                        actions=[
+                            MessageTemplateAction( 
+                                label='租房基本資訊',
+                                text='租房基本資訊'
+                            ),
+                            
+                            URITemplateAction(
+                                label='中原大學 校外賃居網',
+                                uri='https://house.nfu.edu.tw/CYCU'
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
+# 租屋基本資訊
+def ll(event): 
+    try:
+        text = '''
+1.租房可在周邊看房 看有沒有電話 有就打過去問看看
+2.基本上有名的房子為：哈佛劍橋(在女博得)、灰樓、紅樓、白樓、中原double、凱悅等等，可上dcard搜尋相關資訊
+
+        '''
+        message = TextSendMessage(text=text)
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='發生錯誤!'))
+
 
 def sendbasid(event):  # 基本資訊
     try:
