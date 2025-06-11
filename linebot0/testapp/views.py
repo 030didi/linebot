@@ -667,10 +667,10 @@ def sendQA(event):
         QuickReplyButton(action=MessageAction(label="💳系學/學生會費", text="系學/學生會費問題")),
         QuickReplyButton(action=MessageAction(label="👥有沒有直屬", text="直屬問題")),
         QuickReplyButton(action=MessageAction(label="👗要穿什麼", text="穿搭問題")),
-        QuickReplyButton(action=MessageAction(label="🏠學校住宿室友問題", text="住宿問題")),
-        QuickReplyButton(action=MessageAction(label="📚必/選修課被當", text="必修問題")),
-        QuickReplyButton(action=MessageAction(label="🎯活動哪裡找", text="活動問題")),
-        QuickReplyButton(action=MessageAction(label="⏰被記曠課", text="曠課問題")),
+        QuickReplyButton(action=MessageAction(label="🏠學校住宿室友問題", text="學校住宿室友問題")),
+        QuickReplyButton(action=MessageAction(label="📚必/選修課被當", text="必/選修課被當")),
+        QuickReplyButton(action=MessageAction(label="🎯活動哪裡找", text="活動哪裡找")),
+        QuickReplyButton(action=MessageAction(label="⏰被記曠課", text="被記曠課")),
         QuickReplyButton(action=MessageAction(label="🇺🇸英文畢業門檻", text="英文門檻問題")),
         QuickReplyButton(action=MessageAction(label="🔙返回", text="返回主選單"))
     ]
@@ -708,22 +708,22 @@ def handle_qa_response(event, mtext):
             "answer": "👗 你穿得開心就好！\n\n真的沒人在乎你怎麼穿，大學就是要做自己。舒服自在最重要～"
         },
         
-        "住宿問題": {
+        "學校住宿室友問題": {
             "question": "住宿與室友不合怎麼辦？",
             "answer": "🏠 室友不合可以檢舉\n\n如果溝通後還是不行，可以申請換室友。學校都有相關的處理程序，不要委屈自己！"
         },
         
-        "必修問題": {
+        "必/選修課被當": {
             "question": "如果必修要被當了/或是已經被當了，該怎麼辦？",
             "answer": "📚 怕被當可以停修\n\n通常下學期都可以重修，但要注意：\n• 有沒有老師開課\n• 會不會跟其他課撞課\n提早規劃比較好！"
         },
         
-        "活動問題": {
+        "活動哪裡找": {
             "question": "學校活動要去哪裡看？",
             "answer": "🎯 上i-touch找活動資訊\n\n通識活動、音樂會、獎學金申請等資訊都可以在i-touch上找到。記得定期關注！"
         },
         
-        "曠課問題": {
+        "被記曠課": {
             "question": "我被記曠課會怎樣嗎？",
             "answer": "⏰ 每堂課只能曠課兩次\n\n超過兩次就會被老師扣考，只能選擇停修。所以要注意出席率喔！"
         },
