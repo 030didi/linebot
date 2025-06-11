@@ -21,6 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-&vu@zw_!v=)we#+242w#l^0%r*)8ntyf^v5!4i--uvacvprv*#"
+
+
+#更改成自己的LINE Channel Access Token和Secret
 LINE_CHANNEL_ACCESS_TOKEN = 'cZrISS+S0hak7onfMb0unqadVomhQlsnGfohfo43TV64Oh/lRkX1hB4dtfw+rOjjnn8rRpJ5wmmg1FFG/uRkeWP8RIrmaaYxLaYFG6NGmok76zCzh36y7Lc91FGXC1XCL2QLwcQyZje2OO5qFKtw6wdB04t89/1O/w1cDnyilFU='
 LINE_CHANNEL_SECRET = 'd75d6c5eb1552f849d882229ce630b1f'
 # SECURITY WARNING: don't run with debug turned on in production!
